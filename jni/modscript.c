@@ -425,6 +425,8 @@ void bl_NinecraftApp_update_hook(Minecraft* minecraft) {
 	}
 }
 
+#define SETOFFSET(x, y) self->bipedBody.textureOffsetX = x; self->bipedBody.textureOffsetY = y;
+
 void bl_HumanoidModel_constructor_hook(HumanoidModel* self, float scale, float y) {
 	bl_HumanoidModel_constructor_real(self, scale, y);
 	int oldTextureOffsetX = self->bipedHead.textureOffsetX;
@@ -432,7 +434,22 @@ void bl_HumanoidModel_constructor_hook(HumanoidModel* self, float scale, float y
 	bl_ModelPart_addBox(&self->bipedHead, -4.0F, -8.0F, -4.0F, 8, 8, 8, scale + 0.5F);
 	self->bipedHead.textureOffsetX = oldTextureOffsetX;
 	self->bipedHead.transparent = 1;
+	/* ported from http://www.minecraftforum.net/topic/269822-164-ipixelis-female-gender-option-mod-spmp-forge-bukkit/ */
+	SETOFFSET(20, 20);
+	bl_ModelPart_addBox(&self->bipedBody, -3.0F, 1.0F, -3.0F, 6, 1, 1, scale);
+	SETOFFSET(19, 21);
+	bl_ModelPart_addBox(&self->bipedBody, -4.0F, 2.0F, -3.0F, 8, 3, 1, scale);
+	SETOFFSET(20, 21);
+	bl_ModelPart_addBox(&self->bipedBody, -3.0F, 2.0F, -4.0F, 6, 1, 1, scale);
+	SETOFFSET(19, 22);
+	bl_ModelPart_addBox(&self->bipedBody, -4.0F, 3.0F, -4.0F, 8, 1, 1, scale);
+	SETOFFSET(20, 23);
+	bl_ModelPart_addBox(&self->bipedBody, -3.0F, 4.0F, -4.0F, 2, 1, 1, scale);
+	SETOFFSET(23, 23);
+	bl_ModelPart_addBox(&self->bipedBody, 1.0F, 4.0F, -4.0F, 2, 1, 1, scale);
 }
+
+#undef SETOFFSET
 
 JNIEXPORT void JNICALL Java_net_zhuoweizhang_mcpelauncher_ScriptManager_nativeAddItemChest
   (JNIEnv *env, jclass clazz, jint x, jint y, jint z, jint slot, jint id, jint damage, jint amount) {
